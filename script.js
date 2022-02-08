@@ -1,44 +1,52 @@
 "use strict";
 
-const getRandomInt = (max) => {
-  return Math.floor(Math.random() * Math.floor(max));
+let number = 15;
+let sayNumber;
+let count;
+let question;
+
+const isNumber = function (num) {
+  return !isNaN(parseFloat(num) && isFinite(num));
 };
 
-const isNum = (n) => {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-};
+const bot = function (number) {
+  sayNumber = prompt("Угадай число от 1 до 100");
+  count = 10;
 
-const start = () => {
-  let rNumber = getRandomInt(100);
-  // console.log('rNumber: ', rNumber);
-  const game = () => {
-    const num = prompt('"Угадай число от 1 до 100" (Для выхода оставьте строку пустой)');
-    if (num === null) {
-      alert("До свидания");
-      return;
-    }
-    if (isNum(num)) {
-      const realNum = +num;
-      if (realNum > rNumber) {
-        alert("Загаданное число меньше");
-        game();
-      } else if (realNum < rNumber) {
-        alert("Загаданное число больше");
-        game();
+  const guess = function () {
+    if (sayNumber == number) {
+      question = confirm("Поздравляю, Вы угадали!!! Хотели бы сыграть еще?");
+      if (question == true) {
+        count = 10;
+        bot();
       } else {
-        if (confirm("Вы угадали! Сыграем ещё?")) {
-          start();
-        } else {
-          alert("До свидания");
-          return;
-        }
+        return false;
       }
+    } else if (sayNumber > number) {
+      if (count <= 1) {
+        alert("Игра окончена");
+      } else {
+        sayNumber = prompt(`Загаданное число меньше, осталось попыток ${(count = --count)}`);
+        guess();
+      }
+    } else if (sayNumber > 0 && sayNumber < number) {
+      if (count <= 1) {
+        alert("Игра окончена");
+      } else {
+        sayNumber = prompt(`Загаданное число больше, осталось попыток ${(count = --count)}`);
+        guess();
+      }
+    } else if (sayNumber === null) {
+      alert("Игра окончена");
+    } else if (isNumber(sayNumber) == false || sayNumber == 0) {
+      console.log(count);
+      sayNumber = prompt("Введи число!");
+      sayNumber = +sayNumber;
+      guess();
     } else {
-      alert("Введите число");
-      game();
     }
   };
-  game();
+  guess();
 };
 
-start();
+bot(number);
